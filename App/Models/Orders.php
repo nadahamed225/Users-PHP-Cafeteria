@@ -38,9 +38,9 @@ class Orders
     }
 
 
-    public function updateOrderStatus($id,$status)
+    public function deleteOrder($id)
     {
-        return $this->db->rawQuery("select * from `$this->table` set status=$status  where id=$id");
+        return $this->db->rawQuery("DELETE FROM `$this->table` where id=$id");
     }
 
 

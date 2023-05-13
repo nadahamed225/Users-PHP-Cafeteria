@@ -12,88 +12,119 @@
             <?php if(isset($errorroom)): ?>
                 <h3 class="alert alert-danger text-center"><?php  echo $errorroom; ?></h3>
             <?php endif; ?>
+
 <div class="container">
+    <!-------------search by product-------------->
+    <div class="col-4 m-auto mb-4">
+        <form class="d-flex" role="search" method="POST">
+            <input class="form-control me-2" type="search" name="search_prod" value="<?=(isset($search)) ? $search:'';?>"
+                   placeholder="Search by product" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
     <!-- for user -->
     <div class="row">
         <div id="latest" class="col-12">
             <h1 >Latest Order</h1>
         </div>
-        
     </div>
     
     <!-- for user -->
-  <div class="row">
-    <div class="col-md-8">
-      <h1>My Cafeteria Menu</h1>
-    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h1>My Cafeteria Menu</h1>
+        </div>
 
-  <div class="row">
-    <div class="col-md-8 ">
         <div class="row">
-        <?php $i=0; ?>
-    <?php foreach($products as $row):  ?>
-     
-        <div class="col-md-5 m-3">
-            <div class="card p-4 rounded-5  border-dark" style="height:200px; box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 18%);
-            ">
+            <div class="col-md-8 ">
+                <?php if(isset($notfound)){?>
+                    <div class="alert alert-warning">
+                        <?= $notfound;?>
+                    </div>
+
+                <?php }?>
                 <div class="row">
-                     <div class="col-md-5 mt-3"  >
-                     <img src="<?='data:image/jpeg;base64,'.base64_encode($row['picture'])?>"  height="50%" width="100px" />
-                     <a  class="btn rounded-circle  border-dark mt-2 font-weight-bold" onclick="fundecreaseQuantity('localQuantity<?=$row['name']?>')" id="decreaseQuantity<?=$row["name"]?>" >-</a>
-                     <span id="localQuantity<?=$row["name"]?>">1</span>
-                     <a  id="increaseQuantity<?=$row["name"]?>" onclick="funincreaseQuantity('localQuantity<?=$row['name']?>')" class="btn rounded-circle  border-dark mt-2 font-weight-bold" >+</a>
+                    <?php $i=0; ?>
+                    <?php foreach($products as $row):  ?>
 
-                     </div>
-                     <div class="col-md-7">
-                            <div class="card-body">
-                        <h4 class="card-title" style="color: rgb(112, 66, 50)"><?php echo $row['name']?></h4>
-                        <p class="card-text " >Price:<span id="localPrice" class="font-weight-bold" style="color:orange" ><?php echo $row["price"] ?></span>$</p>
+                        <div class=" col-md-5 col-sm-12  mb-3">
+                            <div class="card h-100 p-4 rounded-5  border-dark" style="height:200px; box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 18%);
+                    ">
+                                <div class="row">
+                                    <div class="col-md-5 mt-3"  >
+                                        <img class="img-fluid" src="<?='data:image/jpeg;base64,'.base64_encode($row['picture'])?>"   />
+                                        <a  class="btn rounded-circle btn-sm btn-outline-secondary border-dark mt-2 font-weight-bold" onclick="fundecreaseQuantity('localQuantity<?=$row['name']?>')" id="decreaseQuantity<?=$row["name"]?>" >-</a>
+                                        <span id="localQuantity<?=$row["name"]?>">1</span>
+                                        <a  id="increaseQuantity<?=$row["name"]?>" onclick="funincreaseQuantity('localQuantity<?=$row['name']?>')" class="btn rounded-circle btn-sm btn-outline-secondary  border-dark mt-2 font-weight-bold" >+</a>
 
-                       <button onclick="openOrderDetails('<?php echo $row['id'] ?>','<?php echo $row['name'] ?>')" id="addCart"   class="btn rounded-pill"style="color:white;background-color:orange" >Add To Cart</button>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="card-body">
+                                            <h4 class="card-title  text-truncate" style="color: rgb(112, 66, 50)"><?php echo $row['name']?></h4>
+                                            <p class="card-text " >Price:<span id="localPrice" class="font-weight-bold" style="color:orange" ><?php echo $row["price"] ?></span>$</p>
 
-                      </div>
+                                            <button onclick="openOrderDetails('<?php echo $row['id'] ?>','<?php echo $row['name'] ?>')" id="addCart"   class="btn btn-block rounded-pill"style="color:white;background-color:orange" >Add To Cart</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <?php  $i++; ?>
+
+                    <?php  endforeach; ?>
                 </div>
+
+
             </div>
-            
-           
+
+
+            <div id="cart-form" class="col-md-4" style="background-color:white;height: auto;">
+                <H1 id="cartOrder" class="m-2" style="color: rgb(112, 66, 50)">Cart</H1>
+                <form action="<?php url('orders/store'); ?>" method="POST" >
+                    <h3 style="color:orange">Notes</h3>
+                    <textarea name="notes" id="notes" cols="30" rows="5"></textarea><br>
+                    <input type="number" name="id_user" id="id_user" hidden>
+                    <input type="number" name="totalPriceOrder" id="totalPriceOrder" hidden>
+                    <input type="number" name="userroomNumber" id="userroomNumber" hidden>
+
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="userroom" data-bs-toggle="dropdown" aria-expanded="false">
+                            Room
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <?php foreach($rooms as $row): ?>
+                                <li ><a class="dropdown-item" href="#" onclick="selectroom(this)"><?php echo $row['roomNumber']; ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 p-3">Total Price</div>
+                        <div  class="col-md-4 p-3" style="color:orange"><span id="totalPrice">0.00</span>$</div>
+                    </div>
+                    <button type="submit" class="btn rounded-pill mb-3"style="background-color:orange">Place an Order</button>
+                </form>
+
+            </div>
         </div>
-        </div>
-        <?php  $i++; ?>
-        
-    <?php  endforeach; ?>
+
     </div>
-        
-    
-    </div>
-    
-        <div id="cart-form" class="col-md-4" style="background-color:white;height: auto;">
-            <H1 id="cartOrder" class="m-2" style="color: rgb(112, 66, 50)">Cart</H1>
-            <form action="<?php url('orders/store'); ?>" method="POST" >
-                <h3 style="color:orange">Notes</h3>
-                <textarea name="notes" id="notes" cols="30" rows="5"></textarea><br>
-                <input type="number" name="id_user" id="id_user" hidden>
-                <input type="number" name="totalPriceOrder" id="totalPriceOrder" hidden>
-                <input type="number" name="userroomNumber" id="userroomNumber" hidden>
-                
-                <div class="btn-group">
-        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="userroom" data-bs-toggle="dropdown" aria-expanded="false">
-        Room
-        </button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-                    <?php foreach($rooms as $row): ?>
-                      <li ><a class="dropdown-item" href="#" onclick="selectroom(this)"><?php echo $row['roomNumber']; ?></a></li>
-                    <?php endforeach; ?>
-        </ul>
-    </div>
-                <div class="row">
-                    <div class="col-md-8 p-3">Total Price</div>
-                    <div  class="col-md-4 p-3" style="color:orange"><span id="totalPrice">0.00</span>$</div>
-                </div>
-                <button type="submit" class="btn rounded-pill mb-3"style="background-color:orange">Place an Order</button>
-            </form>
-        
-        </div>
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </div>
 <script>
@@ -184,7 +215,7 @@ function openOrderDetails(id,nameProduct) {
         let totalprice=document.getElementById("totalPrice") ;
         totalprice.innerText=data["totalPrice"];
         let totalPriceOrder=document.getElementById("totalPriceOrder") ;
-    totalPriceOrder.value=data["totalPrice"];
+        totalPriceOrder.value=data["totalPrice"];
         const rowid = document.getElementById("id"+data["name"]);
         rowid.remove();
         const rowlatestid =  document.getElementById("idlatest"+data['name']);

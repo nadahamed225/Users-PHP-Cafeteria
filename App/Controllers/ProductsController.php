@@ -160,6 +160,20 @@ class ProductsController extends Controller
         $res=$select_stmt->execute();
         $dataroom = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
         $data['rooms']=$dataroom;
+
+        if($_SERVER['REQUEST_METHOD']=='POST')
+        {
+            $data['search']=$_POST['search_prod'];
+            $data['products'] =$this->conn->searchByProduct($_POST['search_prod']);
+            if(!$data['products'] )
+            {
+                $data['notfound']="No Result";
+            }
+
+        }
+
+
+
         return $this->view('home/index',$data);
     }
 

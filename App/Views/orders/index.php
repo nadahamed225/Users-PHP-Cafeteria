@@ -14,7 +14,7 @@ echo "
                 <?php  foreach($orders as $row):  ?>
                     <table  class="table  table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-                        <tr>
+                        <tr id="idth<?php echo $i;?>" >
                             <th>#</th>
                             <th >Order Date</th>
                             <th >Status</th>
@@ -23,7 +23,7 @@ echo "
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr id="id<?php echo $i;?>" >
                             <td> <?php echo $i; $i++; ?></td>
                             <td><?php echo $row['date']; ?>
 <!--                                <button onclick="toggleDiv()" type="button" class="btn btn-info text-white" data-bs-toggle="collapse" data-bs-target="#linux">Click me</button>-->
@@ -47,7 +47,7 @@ echo "
                             <td class="text-center"><?php echo $row['totalPrice']; ?></td>
                             <td>
                                     <?php if($row['status']=="processing"): ?>
-                                        <button id="<?php echo $row['id'];?>btnCancel" onclick="cancelOrder('<?php echo $row['id'];?>')" type="button" class="btn btn-dark">Cancel</button>
+                                        <button id="<?php echo $row['id'];?>btnCancel" onclick="cancelOrder('<?php echo $row['id'];?>','<?php echo $i-1;?>')" type="button" class="btn btn-dark">Cancel</button>
                                         <!--                                        <i>processing</i>-->
 <!--                                    --><?php //elseif($row['status']=="done") : ?>
 <!--                                        <i>done</i>-->
@@ -74,11 +74,15 @@ echo "
             div.style.display="none";
         }
     }
-    function cancelOrder(id){
-        var elm =document.getElementById(id+"btnCancel");
-        elm.disabled = true;
-        console.log(id);
-
+    function cancelOrder(id,idrow){
+        fetch(`<?php url('/orders/updateorder/${id}') ?>`)
+            .then(async (res) => {
+                let data =await res.json();
+                const row = document.getElementById("id"+idrow);
+                row.remove();
+                const rowth= document.getElementById("idth"+idrow);
+                rowth.remove();
+            })
     }
 </script>
 

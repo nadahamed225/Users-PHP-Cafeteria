@@ -56,5 +56,13 @@ class Products
         return $this->db->update($this->table,$id,$data);
     }
 
+    public function searchByProduct($search)
+    {
+
+        return $this->db->rawQuery("SELECT * FROM `{$this->table}` WHERE `name` LIKE '%".$search."%'");
+
+    }
+
+
     
 }

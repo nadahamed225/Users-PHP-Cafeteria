@@ -109,9 +109,10 @@ if ($res === false) {
 
 
     public function updateorder($id){
-        $data['order'] = $this->conn->updateOrderStatus($id,"canceled");
-        $data['orders'] = $this->conn->getUserOrder($_SESSION['id']);
-        $data['orderDetails'] = $this->conn->order_details($_SESSION['id']);
-        return $this->view('orders/index',$data);
+        $data['order'] = $this->conn->deleteOrder($id);
+        $result = [
+            'id' => $id
+        ];
+        echo json_encode($result);
     }
 }
