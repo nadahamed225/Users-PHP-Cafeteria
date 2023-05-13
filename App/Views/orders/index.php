@@ -29,19 +29,77 @@ echo "
 <!--                                <button onclick="toggleDiv()" type="button" class="btn btn-info text-white" data-bs-toggle="collapse" data-bs-target="#linux">Click me</button>-->
                                 <button onclick="toggleDiv('<?php echo $i;?>')" type="button" class="btn btn-warning text-white ms-5" >More Details</button>
 
-                                <div id="<?php echo $i;?>d" class="collapse" style="display: none;" >
-                                    <div style="border:1px solid yellow";>
-                                        <?php
-                                        foreach($orderDetails as $pic): ?>
-                                        <?php if($row['id']==$pic['o_id']): ?>
-                                       <img src="<?='data:image/jpeg;base64,'.base64_encode($pic['picture'])?>"  height="40px" width="60px" />
-                                       <p><?php echo $pic['name']; ?><p>
-                                       <p><?php echo $pic['quantity']; ?><p>
-                                       <?php endif;?>
+
+
+<!--                                <div id="--><?php //echo $i;?><!--d" class="collapse" style="display: none;" >-->
+<!--                                    <div style="border:1px solid yellow";>-->
+<!--                                        --><?php
+//                                        foreach($orderDetails as $pic): ?>
+<!--                                        --><?php //if($row['id']==$pic['o_id']): ?>
+<!--                                       <img src="--><?php //='data:image/jpeg;base64,'.base64_encode($pic['picture'])?><!--"  height="40px" width="60px" />-->
+<!--                                       <p>--><?php //echo $pic['name']; ?><!--<p>-->
+<!--                                       <p>--><?php //echo $pic['quantity']; ?><!--<p>-->
+<!--                                       --><?php //endif;?>
+<!--                                --><?php //endforeach;  ?>
+<!--                            <p>--><?php //echo $row['totalPrice']; ?><!--<p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                
+                                <div  class="col-12  order_details" id="<?php echo $i;?>d"
+                                style="display: none; border-left:1px solid red; border-right:1px solid red;"
+                                >
+                                <?php
+                                foreach($orderDetails as $pic): ?>
+                                    <?php if($row['id']==$pic['o_id']): ?>
+                                        <div class="row container mt-3 mb-4">
+                                            <div class="col-3">
+                                                <img src="<?='data:image/jpeg;base64,'.base64_encode($pic['picture'])?>"  height="80px" width="100px" /></div>
+                                            <div class="col-3">
+                                                <p><?= $pic['name']; ?><p>
+                                            </div>
+                                            <div class="col-3">
+
+                                                <p><?=  $pic['quantity']; ?> Qt<p>
+                                            </div>
+
+                                            <div class="col-3">
+                                                <p><?= $pic['totalPriceProduct']; ?> EGP<p>
+                                            </div>
+
+                                        </div>
+
+                                    <?php endif;?>
                                 <?php endforeach;  ?>
-                            <p><?php echo $row['totalPrice']; ?><p>
-                                    </div>
+                                <div class="col-12 mt-3 mb-3">
+                                    <h3 class="text-right">Total : <?= $row['totalPrice']; ?> EGP </h3>
                                 </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             </td>
                             <td><?php echo $row['status']; ?></td>
                             <td class="text-center"><?php echo $row['totalPrice']; ?></td>
